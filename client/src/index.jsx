@@ -18,11 +18,15 @@ class App extends React.Component {
     // TODO
   }
 
+  onSearch () {
+    console.log ('onSearch')
+  }
+
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos}/>
-      <Search onSearch={this.search.bind(this)}/>
+      <Search onSearch={this.search}/>
     </div>)
   }
 }
