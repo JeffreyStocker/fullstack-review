@@ -17,7 +17,7 @@ class App extends React.Component {
     console.log(`${term} was searched`);
     var url = 'http://localhost:1128/repos';
       $.post(url, term, function (data, textStatus, jqXHR) {
-        console.log ('sendRequestToServer Success data:', data, '||', textStatus)
+        console.log ('sendRequestToServer Success data:', data, '||', textStatus).type('form')
       })
   }
 
