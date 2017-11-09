@@ -1,5 +1,5 @@
 const request = require('request');
-const config = require('../config.js');
+const config = require('../config.js') || {TOKEN: ''};
 const bluebird = require('bluebird')
 const db = require ('../database/index.js')
 // const app = require('../server/index.js')
