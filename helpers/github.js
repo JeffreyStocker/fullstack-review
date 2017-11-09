@@ -2,7 +2,8 @@ const request = require('request');
 try {
   const config = require('../config.js')
 } catch (err) {
-  const conig = {TOKEN: ''};
+  let token = process.env.TIMES || '';
+  const config = {TOKEN: token};
 }
 const bluebird = require('bluebird')
 const db = require ('../database/index.js')
