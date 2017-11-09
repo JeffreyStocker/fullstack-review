@@ -22,7 +22,7 @@ let repoSchema = mongoose.Schema({
     // Mixed
     // ObjectId
     // Array
-  id : {type: Number, unique: true}, //note double check this 
+  id : {type: Number, index: true, unique: true}, //note double check this 
   full_name : String,
   name : String,
   html_url : String, 
@@ -80,22 +80,44 @@ let save = (repoInfo) => {
   // })
 }
 
-const fs = require('fs')
+// const fs = require('fs')
 
-var file = fs.readFile('./data.json', (err, data) => {
-  if (err) {
-    console.log ('error', err)
-  } else {
-    // console.log (JSON.parse(data))
-    data = JSON.parse(data);
-    data.forEach(repo => {
-      save(repo);
+// var file = fs.readFile('./data.json', (err, data) => {
+//   if (err) {
+//     console.log ('error', err)
+//   } else {
+//     // console.log (JSON.parse(data))
+//     data = JSON.parse(data);
+//     data.forEach(repo => {
+//       save(repo);
+//     })
+//   }
+// })
+
+// Repo.findOne ({'id': 18221276}, 'name stargazers_count description', (err, person) => {
+//   if (err) {
+//     console.log ('error', err)
+//   } else {
+//     console.log ('query data', person)
+//   }
+// })
+
+var find = (searchObject = {}, fieldsString) => {
+  return new Promise ((resolve, revoke) => {
+    Repo.findOne (searchObject, fieldsString, (err, singleInfo) => {
+      if (err) {
+        // console.log ('error', err)
+        revoke(err)
+      } else {
+        // console.log ('query data', singleInfo)
+        resolve(singleInfo);
+      }
     })
+  })
+    Repo.find({'id' : id })
   }
-})
-  // .then (data => {
-  //   console.log (JSON.parse(data))
-  // })
-  // .catch(err => {
-  //   console.log ('error', err)
-  // })
+
+  find ({'id': 18221276}, 'name stargazers_count description')
+  .then(data => {
+    console.log('testingdata', data)
+  })

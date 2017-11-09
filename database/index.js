@@ -12,7 +12,7 @@ let repoSchema = mongoose.Schema({
     // Mixed
     // ObjectId
     // Array
-  id : {type: Number, unique: true}, //note double check this 
+  id : {type: Number, index: true, unique: true}, //note double check this 
   full_name : String,
   name : String,
   html_url : String, 
@@ -70,4 +70,21 @@ let save = (repoInfo) => {
   // })
 }
 
+
+var find = (searchObject = {}, fieldsString) => {
+  return new Promise ((resolve, revoke) => {
+    Repo.findOne (searchObject, fieldsString, (err, singleInfo) => {
+      if (err) {
+        // console.log ('error', err)
+        revoke(err)
+      } else {
+        // console.log ('query data', singleInfo)
+        resolve(singleInfo);
+      }
+    })
+  })
+    Repo.find({'id' : id })
+  }
+
 module.exports.save = save;
+module.exports.find = find;
