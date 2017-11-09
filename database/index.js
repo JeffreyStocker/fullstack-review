@@ -20,7 +20,7 @@ let repoSchema = mongoose.Schema({
   size : Number,
   watchers_count : Number,
   stargazers_count : Number,
-  jsonData : String,
+  // jsonData : String,
   created_at : Date,
   updated_at : Date,
   pushed_at : Date,
@@ -52,15 +52,23 @@ let save = (repoInfo) => {
     created_at : repoInfo.created_at,
     updated_at : repoInfo.updated_at,
     pushed_at : repoInfo.pushed_at,
-    jsonData : JSON.stringify(repoInfo),
+    // jsonData : JSON.stringify(repoInfo),
 
     ownerId : repoInfo.owner.id,
     owner_login : repoInfo.login,
   }; 
   //one way to save
   Repo.create (saveObject, (err, response) => { 
-    if (err)  { console.log ('error saving repo', err); }
-    else      { console.log('save sucessfull response: ', response)} 
+    if (err)  { 
+      if (err.code === 11000) { //'E11000 duplicate key error collection'
+        console.log ('duplication')
+        // may want to update
+      } 
+      // console.log ('error saving repo', err);
+    }
+    else { 
+      console.log('save sucessfull response: ', response)
+    } 
   });
   
   //  or can use to save
@@ -86,5 +94,45 @@ var find = (searchObject = {}, fieldsString) => {
     Repo.find({'id' : id })
   }
 
-module.exports.save = save;
-module.exports.find = find;
+  
+  module.exports.save = save;
+  module.exports.find = find;
+  
+  module.exports.getAll = function (fieldsString) {
+    // console.log(fieldsString)
+    return new Promise ((resolve, revoke) => {
+      Repo.find({}, function (err, data) {
+        if (err) {
+          revoke(err)
+        } else {
+          resolve(data)
+        }
+    })
+  })
+}
+
+var saveAll = function (ArrayOfRepos) {
+  return new Promise ((resolve,revoke) => {
+    if (ArrayOfRepos) {
+      ArrayOfRepos.forEach(repo => {
+        save(repo)
+      })
+    }
+    resolve()
+  })
+}
+
+module.exports.middleware = function (req, res, next) {
+  // console.log('here', req.data.gitdata)
+  saveAll(req.data.gitdata)
+  .then(next())
+    /////////////// this was causing an error to be sent 500 server error
+    // .then((test) => {
+    //   console.log ('sucessful save')
+    //   next()
+    // })
+    // .catch(err => {
+    //   // console.log("Error saving to database")
+    //   next();
+    // })
+}
