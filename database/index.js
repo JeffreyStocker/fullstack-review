@@ -67,7 +67,7 @@ let save = (repoInfo) => {
       // console.log ('error saving repo', err);
     }
     else { 
-      console.log('save sucessfull response: ', response)
+      // console.log('save sucessfull response: ', response)
     } 
   });
   
@@ -114,9 +114,9 @@ var find = (searchObject = {}, fieldsString) => {
 var saveAll = function (ArrayOfRepos) {
   return new Promise ((resolve,revoke) => {
     if (ArrayOfRepos) {
-      ArrayOfRepos.forEach(repo => {
-        save(repo)
-      })
+      for (var i = 0; i < ArrayOfRepos.length; i++ ) {
+        save(ArrayOfRepos[i])
+      }
     }
     resolve()
   })
