@@ -8,6 +8,7 @@ const db = require ('../database/index.js')
 module.exports.port = 1128;
 module.exports.url = 'localhost:1128';
 ///////////////////////////
+app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos', function (req, res, next) {  /// process the body data
   // TODO - your code here!
@@ -25,15 +26,17 @@ app.post('/repos', function (req, res, next) {  /// process the body data
   })
 });
 
-app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos', github.githubMiddle, db.middleware)
 app.post('/repos', function (req, res) {
   console.log('aaaa')
   db.getAll()
+    .then (data => {
+      console.log (data.length)
+      res.statusCode = 201;
+      res.json(data)
+    })
   
-  res.statusCode = 201;
-  res.end()
 })
 
 
@@ -41,7 +44,12 @@ app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
   // console.log('get Message', req.body)
-  db.find()
+  db.getAll()
+  .then (data => {
+    console.log (data.length)
+    res.statusCode = 200;
+    res.json(data)
+  })
 
 });
 
