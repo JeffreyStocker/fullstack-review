@@ -1,6 +1,7 @@
 const express = require('express');
 let app = express();
-console.log('Program Start')
+const github = require ('../helpers/github.js')
+
 ////////////////////////////
 /// changeable Variables
 module.exports.port = 1128;
@@ -33,3 +34,8 @@ let port = module.exports.port;
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });
+
+//https://stackoverflow.com/questions/14168433/node-js-error-connect-econnrefused
+process.on('uncaughtException', function (err) {
+  console.log ('uncaughtErrors: ',  err)
+})
