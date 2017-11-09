@@ -6,13 +6,15 @@ const db = require ('../database/index.js')
 
 //// middleware ////////
 module.exports.githubMiddle = function (req, res, next) {
-  console.log('req.body', req.data.body)
+  // console.log('req.body', req.data.body)
   getReposByUsername ( req.data.body)
     .then (githubData => {
-      req.gitHubData = githubData
+      req.data.gitdata = githubData
+      next();
     })
     .catch (err => {
-      console.log ('error getting github data', err)
+      // console.log ('error getting github data', err)
+      next()
     })
 }
 
@@ -21,7 +23,7 @@ module.exports.githubMiddle = function (req, res, next) {
 ///// helper functions////////////
 let getReposByUsername = (userName) => {
   return new Promise ((resolve, revoke) => {
-    console.log('USERNAME', userName)
+    // console.log('USERNAME', userName)
     // TODO - Use the request module to request repos for a specific
     // user from the github API
     
@@ -44,7 +46,7 @@ let getReposByUsername = (userName) => {
         revoke (error)
         // console.error ('https: get error :', error)
       } else {
-        console.log (JSON.parse(data.body))
+        // console.log (JSON.parse(data.body))
         resolve(JSON.parse(data.body))
       }
     })
