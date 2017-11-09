@@ -8,20 +8,25 @@ module.exports.port = 1128;
 module.exports.url = 'localhost:1128';
 ///////////////////////////
 
-app.use(express.static(__dirname + '/../client/dist'));
-
-app.post('/repos', function (req, res) {
+app.post('/repos', function (req, res, next) {  /// process the body data
   // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
-  console.log ('gotbody~!body')
   var body = '';
   req.on('data', (data) => {body += data})
   req.on('end', () => {
-    console.log ('body', body)
+    // console.log ('body', body)
+    req.data = {};
+    req.data.body = body;
+    next();
   })
 });
+
+app.use(express.static(__dirname + '/../client/dist'));
+app.use('/repos', github.githubMiddle)
+
+
 
 app.get('/repos', function (req, res) {
   // TODO - your code here!
@@ -29,11 +34,15 @@ app.get('/repos', function (req, res) {
   console.log('get Message', req.body)
 });
 
-let port = module.exports.port;
 
+
+
+let port = module.exports.port;
 app.listen(port, function() {
   console.log(`listening on port ${port}`);
 });
+
+
 
 //https://stackoverflow.com/questions/14168433/node-js-error-connect-econnrefused
 process.on('uncaughtException', function (err) {

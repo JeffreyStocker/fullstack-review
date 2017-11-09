@@ -1,24 +1,33 @@
 const request = require('request');
 const config = require('../config.js');
 const bluebird = require('bluebird')
-
+const db = require ('../database/index.js')
 // const app = require('../server/index.js')
 
-
-var githubMiddle = function (req, res, next) {
-  
+//// middleware ////////
+module.exports.githubMiddle = function (req, res, next) {
+  console.log('req.body', req.data.body)
+  getReposByUsername ( req.data.body)
+    .then (githubData => {
+      req.gitHubData = githubData
+    })
+    .catch (err => {
+      console.log ('error getting github data', err)
+    })
 }
 
 
+
+///// helper functions////////////
 let getReposByUsername = (userName) => {
   return new Promise ((resolve, revoke) => {
-
+    console.log('USERNAME', userName)
     // TODO - Use the request module to request repos for a specific
     // user from the github API
     
     // The options object has been provided to help you out, 
     // but you'll have to fill in the URL
-    var userName = 'jeffreystocker'
+    // var userName = 'jeffreystocker'
     // var callback = (error, data) => {
     //   console.log (error)
     // }
@@ -35,8 +44,8 @@ let getReposByUsername = (userName) => {
         revoke (error)
         // console.error ('https: get error :', error)
       } else {
-        resolve(JSON.parse(data))
-        // console.error ('https: get data :', data)
+        console.log (JSON.parse(data.body))
+        resolve(JSON.parse(data.body))
       }
     })
   })
@@ -45,4 +54,5 @@ let getReposByUsername = (userName) => {
   /////testing
   // getReposByUsername()
   
+  module.exports.getReposByUsername = getReposByUsername;
   module.exports.getReposByUsername = getReposByUsername;
