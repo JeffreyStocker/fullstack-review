@@ -1,0 +1,12 @@
+.repo-view {
+  text-shadow: 100px;
+  border: 2px black solid;
+  margin: 5px;
+  float: left;
+  padding: 5px;
+}
+
+.repo-view .title {
+  font-size: 133%;
+  font-weight: bold; 
+}
