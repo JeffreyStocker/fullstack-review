@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/fetcher');
+// var uri = process.env.MONGOLAB_MAUVE_URI || 'mongodb://localhost/fetcher';
+var uri = process.env.MONGOLAB_MAUVE_URI || 'mongodb://localhost/fetcher';
+console.log ('uri',uri)
+console.log ('process.env.MONGOLAB_MAUVE_URI', process.env.data_google_youtube_api)
+
+console.log ('onedrive', process.env.ONEDRIVE)
+mongoose.connect(uri);
 
 let repoSchema = mongoose.Schema({
   // TODO: your schema here! http://mongoosejs.com/docs/guide.html

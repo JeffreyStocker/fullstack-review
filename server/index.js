@@ -5,7 +5,7 @@ const db = require ('../database/index.js')
 
 ////////////////////////////
 /// changeable Variables
-module.exports.port = process.env.data-port || 1128;
+module.exports.port = (process.env.dataport || 1128);
 module.exports.url = 'localhost:1128';
 ///////////////////////////
 app.use(express.static(__dirname + '/../client/dist'));
