@@ -21,7 +21,7 @@ class App extends React.Component {
 
   getReposFromServer () {
     var storedthis = this;
-    $.get('http://localhost:1128/repos','', function (data, textStatus) {
+    $.get('/repos','', function (data, textStatus) {
       // console.log ('received data', data)
       storedthis.setState({ repos: data })
     } )
@@ -30,7 +30,7 @@ class App extends React.Component {
   search (term) {
     var tempThis = this
     // console.log(`${term} was searched`);
-    var url = 'http://localhost:1128/repos';
+    var url = '/repos';
       $.post(url, term, function (data, textStatus) {
         // console.log ('sendRequestToServer Success data:', data, '||', textStatus)
         if (textStatus === 'success') {

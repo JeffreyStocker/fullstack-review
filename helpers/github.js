@@ -2,7 +2,7 @@ const request = require('request');
 try {
   const config = require('../config.js')
 } catch (err) {
-  let token = process.env.TIMES || '';
+  let token = process.env.data-github-token || process.env.TOKEN;
   const config = {TOKEN: token};
 }
 const bluebird = require('bluebird')
